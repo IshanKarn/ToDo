@@ -61,6 +61,7 @@ todo_app/
 ├── requirements.txt
 ├── .env
 └── README.md
+```
 
 ## 🔐 Authentication (JWT)
 
@@ -70,6 +71,7 @@ todo_app/
 
 ```http
 Authorization: Bearer <JWT_TOKEN>
+```
 
 ## 🗄️ Database (PostgreSQL – Neon)
 
@@ -97,25 +99,30 @@ Authorization: Bearer <JWT_TOKEN>
 ```bash
 git clone <your-repo-url>
 cd todo_app
+```
 
 ### 2️⃣ Create Virtual Environment
 ```bash
 python -m venv venv
 source venv/bin/activate      # Windows: venv\Scripts\activate
+```
 
 ### 3️⃣ Install Dependencies
 ```bash
 pip install -r requirements.txt
+```
 
 ### 🔑 Environment Variables
 ```bash
 DATABASE_URL=postgresql://<user>:<password>@<neon-host>/<dbname>
 JWT_SECRET=your_secret_key
 JWT_ALGORITHM=HS256
+```
 
 ### ▶️ Running the Application
 ```bash
 uvicorn app.main:app --reload
+```
 
 - **Web UI:** http://localhost:8000  
 - **Swagger Docs:** http://localhost:8000/docs  
@@ -149,6 +156,7 @@ Authorization: Bearer <JWT>
   "description": "FastAPI To-Do App",
   "due_date": "2025-01-01"
 }
+```
 
 ### Update Task
 ```http
@@ -157,8 +165,10 @@ Authorization: Bearer <JWT>
 {
   "status": "completed"
 }
+```
 
 ### Delete Task
 ```http
 DELETE /api/tasks/1
 Authorization: Bearer <JWT>
+```
