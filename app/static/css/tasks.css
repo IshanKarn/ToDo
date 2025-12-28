@@ -1,0 +1,10 @@
+/* tasks.css */
+
+/* Smooth hover */
+li {
+    transition: background-color 0.2s ease;
+}
+
+li:hover {
+    background-color: #f9fafb;
+}

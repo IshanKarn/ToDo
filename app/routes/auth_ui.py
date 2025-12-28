@@ -3,6 +3,7 @@ from fastapi.templating import Jinja2Templates
 from fastapi.responses import RedirectResponse
 from app.database import get_connection
 from app.auth import create_access_token
+from app.security import authenticate
 
 router = APIRouter()
 templates = Jinja2Templates(directory="app/templates")
@@ -10,7 +11,7 @@ templates = Jinja2Templates(directory="app/templates")
 from app.security import hash_password
 
 @router.get("/register")
-def login_page(request: Request):
+def register_page(request: Request):
     return templates.TemplateResponse("register.html", {"request": request})
 
 @router.post("/register")
@@ -55,24 +56,25 @@ def login_page(request: Request):
 from app.security import verify_password
 
 @router.post("/login")
-def login_user(
-    username: str = Form(...),
-    password: str = Form(...)
-):
-    conn = get_connection()
-    cur = conn.cursor()
+def login_user(username: str = Form(...), password: str = Form(...)):
+    user = authenticate(username, password)
+    if not user:
+        return RedirectResponse("/login?error=invalid", status_code=302)
 
-    cur.execute(
-        "SELECT id, password FROM users WHERE username=%s",
-        (username,)
-    )
-    user = cur.fetchone()
-    conn.close()
+    token = create_access_token({"user_id": user["id"]})
 
-    if not user or not verify_password(password, user[1]):
-        return RedirectResponse("/login?error=1", status_code=302)
-
-    token = create_access_token({"user_id": user[0]})
     response = RedirectResponse("/", status_code=302)
-    response.set_cookie("access_token", token, httponly=True)
+    response.set_cookie(
+        key="access_token",
+        value=token,
+        httponly=True,
+        path="/",
+        samesite="lax"
+    )
+    return response
+
+@router.get("/logout")
+def logout():
+    response = RedirectResponse("/", status_code=302)
+    response.delete_cookie("access_token")
     return response

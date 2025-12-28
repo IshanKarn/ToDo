@@ -1,28 +1,3 @@
-# from fastapi import APIRouter, HTTPException
-# from app.schemas import TaskCreate
-# from app import crud
-
-# router = APIRouter(prefix="/api/tasks", tags=["Tasks API"])
-
-# @router.post("/")
-# def create_task(task: TaskCreate):
-#     task_id = crud.create_task(task.dict())
-#     return {"id": task_id, "message": "Task created"}
-
-# @router.get("/")
-# def list_tasks():
-#     tasks = crud.get_tasks()
-#     return [
-#         {
-#             "id": t[0],
-#             "title": t[1],
-#             "description": t[2],
-#             "due_date": t[3],
-#             "status": t[4]
-#         } for t in tasks
-#     ]
-
-
 from fastapi import APIRouter, Depends, HTTPException
 from app.schemas import TaskCreate, TaskUpdate
 from app.auth import verify_token

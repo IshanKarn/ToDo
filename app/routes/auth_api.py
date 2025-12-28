@@ -22,15 +22,3 @@ def login(username: str, password: str):
 
     token = create_access_token({"user_id": user[0]})
     return {"access_token": token, "token_type": "bearer"}
-
-@router.post("/login")
-def login(username: str, password: str):
-    token = create_access_token({"user_id": user[0]})
-
-    response = JSONResponse({"message": "Login successful"})
-    response.set_cookie(
-        key="access_token",
-        value=token,
-        httponly=True
-    )
-    return response

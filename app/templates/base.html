@@ -1,0 +1,41 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>{% block title %}Todo App{% endblock %}</title>
+
+    <!-- Tailwind CDN -->
+    <script src="https://cdn.tailwindcss.com"></script>
+
+    <!-- Page specific CSS -->
+    {% block css %}{% endblock %}
+</head>
+<body class="bg-gray-100 min-h-screen flex flex-col">
+
+<!-- Navbar -->
+<nav class="bg-blue-600 text-white px-6 py-4 flex justify-between">
+    <h1 class="font-semibold text-lg">Todo App</h1>
+
+    <div class="space-x-4">
+        {% if is_logged_in %}
+            <a href="/" class="hover:underline">Tasks</a>
+            <a href="/logout" class="hover:underline">Logout</a>
+        {% else %}
+            <a href="/login" class="hover:underline">Login</a>
+            <a href="/register" class="hover:underline">Register</a>
+        {% endif %}
+    </div>
+</nav>
+
+<!-- Main content -->
+<main class="flex-grow">
+    {% block content %}{% endblock %}
+</main>
+
+<!-- Footer -->
+<footer class="bg-gray-800 text-white text-center py-3 text-sm">
+    © {{ 2025 }} Todo App. All rights reserved.
+</footer>
+
+</body>
+</html>

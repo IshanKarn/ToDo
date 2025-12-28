@@ -113,3 +113,26 @@ def delete_task(task_id, user_id):
         return None
 
     return {"message": "Task deleted"}
+        
+from psycopg2.extras import RealDictCursor
+
+def get_user_by_username(username: str):    
+    conn = get_connection()
+    with conn.cursor(cursor_factory=RealDictCursor) as cur:
+        cur.execute(
+            "SELECT * FROM users WHERE username = %s",
+            (username,)
+        )
+        return cur.fetchone()
+
+
+def create_user(conn, username: str, password_hash: str):
+    with conn.cursor() as cur:
+        cur.execute(
+            """
+            INSERT INTO users (username, password_hash)
+            VALUES (%s, %s)
+            """,
+            (username, password_hash)
+        )
+        conn.commit()

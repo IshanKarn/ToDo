@@ -1,5 +1,3 @@
-
-
 from fastapi import APIRouter, Request, Form
 from fastapi.responses import RedirectResponse
 from fastapi.templating import Jinja2Templates
@@ -22,7 +20,8 @@ def home(request: Request):
         "tasks.html",
         {
             "request": request,
-            "tasks": tasks
+            "tasks": tasks,
+            "is_logged_in": True   # ✅ pass explicitly
         }
     )
 
@@ -73,38 +72,4 @@ def delete_task(request: Request, task_id: int):
         return RedirectResponse("/login", status_code=302)
 
     crud.delete_task(task_id, user_id)
-    return RedirectResponse("/", status_code=303)
-
-@router.get("/logout")
-def logout():
-    response = RedirectResponse("/login", status_code=302)
-    response.delete_cookie("access_token")
-    return response
-
-
-###
-
-@router.get("/")
-def show_tasks(request: Request):
-    tasks = crud.get_tasks()
-    return templates.TemplateResponse("tasks.html", {
-        "request": request,
-        "tasks": tasks
-    })
-
-@router.get("/add")
-def add_task_form(request: Request):
-    return templates.TemplateResponse("add_task.html", {"request": request})
-
-@router.post("/add")
-def add_task(
-    title: str = Form(...),
-    description: str = Form(None),
-    due_date: str = Form(None)
-):
-    crud.create_task({
-        "title": title,
-        "description": description,
-        "due_date": due_date
-    })
     return RedirectResponse("/", status_code=303)

@@ -1,94 +1,55 @@
-<!DOCTYPE html>
-<html lang="en">
-<head>
-    <meta charset="UTF-8">
-    <title>Register</title>
-    <style>
-        body {
-            font-family: Arial, sans-serif;
-            background: #f4f6f8;
-        }
-        .container {
-            width: 360px;
-            margin: 100px auto;
-            padding: 24px;
-            background: white;
-            border-radius: 6px;
-            box-shadow: 0 2px 8px rgba(0,0,0,0.1);
-        }
-        h2 {
-            text-align: center;
-            margin-bottom: 16px;
-        }
-        input {
-            width: 100%;
-            padding: 10px;
-            margin: 8px 0;
-            box-sizing: border-box;
-        }
-        button {
-            width: 100%;
-            padding: 10px;
-            margin-top: 12px;
-            background: #2563eb;
-            border: none;
-            color: white;
-            font-size: 16px;
-            cursor: pointer;
-        }
-        button:hover {
-            background: #1e40af;
-        }
-        .error {
-            color: red;
-            font-size: 14px;
-            margin-bottom: 10px;
-            text-align: center;
-        }
-        .link {
-            text-align: center;
-            margin-top: 12px;
-        }
-        a {
-            text-decoration: none;
-            color: #2563eb;
-        }
-    </style>
-</head>
-<body>
+{% extends "base.html" %}
 
-<div class="container">
-    <h2>Register</h2>
+{% block title %}Register{% endblock %}
 
-    {% if request.query_params.get("error") == "exists" %}
-        <div class="error">Username already exists</div>
-    {% elif request.query_params.get("error") == "weak" %}
-        <div class="error">Password must be at least 8 characters</div>
-    {% endif %}
+{% block css %}
+<link rel="stylesheet" href="/static/css/register.css">
+{% endblock %}
 
-    <form method="post" action="/register">
-        <input 
-            type="text" 
-            name="username" 
-            placeholder="Username" 
-            required
-        />
+{% block content %}
+<div class="flex justify-center items-center mt-20">
+    <div class="bg-white p-6 rounded shadow w-96">
+        <h2 class="text-2xl font-semibold text-center mb-4">Register</h2>
 
-        <input 
-            type="password" 
-            name="password" 
-            placeholder="Password (min 8 chars)" 
-            required
-        />
+        {% if request.query_params.get("error") == "exists" %}
+            <p class="text-red-500 text-sm text-center mb-3">
+                Username already exists
+            </p>
+        {% elif request.query_params.get("error") == "weak" %}
+            <p class="text-red-500 text-sm text-center mb-3">
+                Password must be at least 8 characters
+            </p>
+        {% endif %}
 
-        <button type="submit">Create Account</button>
-    </form>
+        <form method="post" action="/register" class="space-y-3">
+            <input
+                type="text"
+                name="username"
+                placeholder="Username"
+                required
+                class="w-full border px-3 py-2 rounded focus:outline-none focus:ring focus:ring-blue-300"
+            />
 
-    <div class="link">
-        Already have an account?
-        <a href="/login">Login</a>
+            <input
+                type="password"
+                name="password"
+                placeholder="Password (min 8 chars)"
+                required
+                class="w-full border px-3 py-2 rounded focus:outline-none focus:ring focus:ring-blue-300"
+            />
+
+            <button
+                type="submit"
+                class="w-full bg-blue-600 text-white py-2 rounded hover:bg-blue-700"
+            >
+                Create Account
+            </button>
+        </form>
+
+        <p class="text-sm text-center mt-4">
+            Already have an account?
+            <a href="/login" class="text-blue-600 hover:underline">Login</a>
+        </p>
     </div>
 </div>
-
-</body>
-</html>
+{% endblock %}
