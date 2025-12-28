@@ -1,0 +1,94 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Register</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            background: #f4f6f8;
+        }
+        .container {
+            width: 360px;
+            margin: 100px auto;
+            padding: 24px;
+            background: white;
+            border-radius: 6px;
+            box-shadow: 0 2px 8px rgba(0,0,0,0.1);
+        }
+        h2 {
+            text-align: center;
+            margin-bottom: 16px;
+        }
+        input {
+            width: 100%;
+            padding: 10px;
+            margin: 8px 0;
+            box-sizing: border-box;
+        }
+        button {
+            width: 100%;
+            padding: 10px;
+            margin-top: 12px;
+            background: #2563eb;
+            border: none;
+            color: white;
+            font-size: 16px;
+            cursor: pointer;
+        }
+        button:hover {
+            background: #1e40af;
+        }
+        .error {
+            color: red;
+            font-size: 14px;
+            margin-bottom: 10px;
+            text-align: center;
+        }
+        .link {
+            text-align: center;
+            margin-top: 12px;
+        }
+        a {
+            text-decoration: none;
+            color: #2563eb;
+        }
+    </style>
+</head>
+<body>
+
+<div class="container">
+    <h2>Register</h2>
+
+    {% if request.query_params.get("error") == "exists" %}
+        <div class="error">Username already exists</div>
+    {% elif request.query_params.get("error") == "weak" %}
+        <div class="error">Password must be at least 8 characters</div>
+    {% endif %}
+
+    <form method="post" action="/register">
+        <input 
+            type="text" 
+            name="username" 
+            placeholder="Username" 
+            required
+        />
+
+        <input 
+            type="password" 
+            name="password" 
+            placeholder="Password (min 8 chars)" 
+            required
+        />
+
+        <button type="submit">Create Account</button>
+    </form>
+
+    <div class="link">
+        Already have an account?
+        <a href="/login">Login</a>
+    </div>
+</div>
+
+</body>
+</html>

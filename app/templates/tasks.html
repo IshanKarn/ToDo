@@ -1,0 +1,26 @@
+<h2>My To-Do List</h2>
+
+<form action="/tasks/create" method="post">
+  <input name="title" placeholder="Task title" required />
+  <button type="submit">Add</button>
+</form>
+
+<ul>
+  {% for task in tasks %}
+    <li>
+      {{ task.title }} - {{ task.status }}
+
+      <form action="/tasks/update/{{ task.id }}" method="post" style="display:inline">
+        <select name="status">
+          <option value="pending">Pending</option>
+          <option value="completed">Completed</option>
+        </select>
+        <button>Update</button>
+      </form>
+
+      <form action="/tasks/delete/{{ task.id }}" method="post" style="display:inline">
+        <button>Delete</button>
+      </form>
+    </li>
+  {% endfor %}
+</ul>
